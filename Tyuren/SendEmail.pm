@@ -38,7 +38,7 @@ sub send {
 	Today_and_Now
     );
 
-    open(SDML,"| /usr/lib/sendmail -t -i") || die 'sendmail error';
+    open(SDML,"| /usr/lib/sendmail -i") || die 'sendmail error';
     $self->{subject} = encode('MIME-Header', $self->{subject});
     print SDML "MIME-Version: 1.0\n";
     print SDML "From: $self->{from_email}\n";
