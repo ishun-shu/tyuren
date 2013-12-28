@@ -78,6 +78,7 @@ sub execute {
 	nickname    => decode('utf8', $student_info->[1]),
 	total_point => $tyuren->{params}->{total_point},
 	address     => $address->[2],
+	kind        => $tyuren->{params}->{kind},
     });
     my $can_send_email = $student_info->[4];
     if($can_send_email) {

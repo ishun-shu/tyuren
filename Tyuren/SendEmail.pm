@@ -11,6 +11,11 @@ use Date::Calc qw/Today_and_Now/;
 use Encode;
 use Jcode;
 
+my $KIND_TO_NAME = {
+    1 => '入室',
+    2 => '退室',
+};
+
 sub new {
     my ($class, $args) = @_;
     return unless $args;
@@ -28,6 +33,7 @@ sub send {
     $self->{body} = sprintf(
 	_mail_body(),
 	$self->{params}->{nickname},
+	$KIND_TO_NAME->{$self->{params}->{kind}},
 	$self->{params}->{total_point},
 	Today_and_Now
     );
@@ -45,7 +51,7 @@ sub send {
 }
 
 sub _mail_body {
-    return "%sさんが桜学舎にチェックイン(チェックアウト)しました\n現在のポイント数は%dです\n\n%04d-%02d-%02d %02d:%02d:%02d\n";
+    return "%sさんが桜学舎に%sしました\n現在のポイント数は%dです\n\n%04d-%02d-%02d %02d:%02d:%02d\n";
 }
 
 1;
