@@ -7,13 +7,14 @@ use base qw/Class::Accessor::Fast/;
 
 use utf8;
 use FindBin;
-use Date::Calc qw/Today_and_Now/;
 use Encode;
 use Jcode;
+use Date::Calc qw/Today_and_Now/;
+use Mail::Sendmail;
 
 my $KIND_TO_NAME = {
-    1 => '入室',
-    2 => '退室',
+    1 => 'に入室',
+    2 => 'を退室',
 };
 
 sub new {
@@ -23,7 +24,7 @@ sub new {
 	params     => $args,
 	from_email => 'admin@sakuragakusha.com',
 	to_email   => $args->{address},
-	subject    => '桜学舎からのお知らせ',
+	subject    => '櫻學舎からのお知らせ',
 	body       => '',
     });
 }
@@ -38,20 +39,23 @@ sub send {
 	Today_and_Now
     );
 
-    open(SDML,"| /usr/lib/sendmail -i") || die 'sendmail error';
+    $self->{body} = Jcode::convert($self->{body},'jis');
     $self->{subject} = encode('MIME-Header', $self->{subject});
-    print SDML "MIME-Version: 1.0\n";
-    print SDML "From: $self->{from_email}\n";
-    print SDML "To: $self->{to_email}\n";
-    print SDML "Subject: $self->{subject}\n";
-    print SDML "Content-Transfer-Encoding: 7bit\n";
-    print SDML "Content-Type: text/plain; charset=\"ISO-2022-JP\"\n\n";
-    print SDML Jcode::convert($self->{body},'jis');
-    close SDML;
+    my $cc = 'sakuragakusha+tyuren@gmail';
+    my %mail = (
+	'Content-Type' => 'text/plain; charset="iso-2022-jp"',
+	'From'         => $self->{from_email},
+	'To'           => $self->{to_email},
+	'Cc'           => $cc,
+	'Subject'      => $self->{subject},
+	'message'      => $self->{body},
+    );
+
+    sendmail %mail;
 }
 
 sub _mail_body {
-    return "%sさんが桜学舎に%sしました\n現在のポイント数は%dです\n\n%04d-%02d-%02d %02d:%02d:%02d\n";
+    return "%sさんが櫻學舎%sしました\n現在のポイント数は%dです\n\n%04d-%02d-%02d %02d:%02d:%02d\n";
 }
 
 1;
