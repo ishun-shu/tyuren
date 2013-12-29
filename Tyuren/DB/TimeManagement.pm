@@ -34,8 +34,8 @@ sub select_by_duration {
     my $self = shift;
     my $dbh = shift;
     my %args = Params::Validate::validate(@_, {
-	start_datetime => { regex => qr/\A[0-9]{4}-[1-9]{2}-[1-9]{2}\s[1-9]{2}:[1-9]{2}:[1-9]{2}\z/ },
-	end_datetime   => { regex => qr/\A[0-9]{4}-[1-9]{2}-[1-9]{2}\s[1-9]{2}:[1-9]{2}:[1-9]{2}\z/ },
+	start_datetime => { regex => qr/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}\z/ },
+	end_datetime   => { regex => qr/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}\z/ },
     });
 
     my $sth = $dbh->prepare(qq/
@@ -53,7 +53,7 @@ sub select_by_duration {
 	$args{end_datetime}
     );
 
-    return $sth->fetchrow_hashref(qr/student_id/);
+    return $sth->fetchall_hashref('id');
 }
 
 sub insert {

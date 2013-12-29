@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use Date::Calc qw/Today Today_and_Now Add_Delta_Days Add_Delta_YMD/;
+use Date::Calc qw/Today Today_and_Now Add_Delta_Days Add_Delta_YMD Days_in_Month/;
 
 use Tyuren::DB;
 use Tyuren::DB::LoginInfo;
@@ -146,10 +146,12 @@ sub get_monthly_time_management {
     my $self = shift;
 
     # target date is last month
-    my ($year, $month, $day) = Add_Delta_YMD(Today(), 0, -1, 0);
+    my ($year, $month) = Add_Delta_YMD(Today(), 0, 0, 0);
+    my $days = Days_in_Month($year, $month);
+
     return Tyuren::DB::TimeManagement->select_by_duration($self->{dbh}, {
-	start_datetime => sprintf("%04d-%02d-%2d 00:00:00", $year, $month, $day),
-	end_datetime   => sprintf("%04d-%02d-%2d 23:59:59", $year, $month, $day),
+	start_datetime => sprintf("%04d-%02d-01 00:00:00", $year, $month),
+	end_datetime   => sprintf("%04d-%02d-%2d 23:59:59", $year, $month, $days),
     });
 }
 
