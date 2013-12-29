@@ -10,6 +10,10 @@ sub header {
     print "Content-Type: text/plane; charset=utf-8;\n\n";
 }
 
+sub header_html {
+    print "Content-Type: text/html; charset=utf-8;\n\n";
+}
+
 sub ok {
     print "0\n";
 }

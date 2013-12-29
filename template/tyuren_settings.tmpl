@@ -3,16 +3,28 @@
 <title>Tyuren System</title>
 </head> 
 <body>
-<p>hello world</p>
-<TMPL_VAR NAME="all_student">
-  <TMPL_LOOP NAME="all_student">
-  <TMPL_VAR NAME="student_id">
-  <TMPL_VAR NAME="nickname">
-  <TMPL_VAR NAME="status">
-  <TMPL_VAR NAME="total_point">
-  <TMPL_VAR NAME="can_send_email">
-  <TMPL_VAR NAME="link_to">
-  <TMPL_VAR NAME="create_datetime">
+<p>the lists of all students</p>
+<table border=2 width=250 align=center>
+<tr>
+  <th>student_id</th>
+  <th>nickname</th>
+  <th>status</th>
+  <th>total_point</th>
+  <th>can_send_email</th>
+  <th>link_to</th>
+  <th>create_datetime</th>
+</tr>
+<TMPL_LOOP NAME=all_student>
+<tr>
+  <td><TMPL_VAR NAME=student_id></td>
+  <td><TMPL_VAR NAME=nickname></td>
+  <td><TMPL_VAR NAME=status></td>
+  <td><TMPL_VAR NAME=total_point></td>
+  <td><TMPL_VAR NAME=can_send_email></td>
+  <td><TMPL_VAR NAME=link_to></td>
+  <td><TMPL_VAR NAME=create_datetime></td>
+</tr>
 </TMPL_LOOP>
+</table>
 </body>
 </html>

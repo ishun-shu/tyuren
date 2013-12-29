@@ -42,7 +42,7 @@ sub select_all {
     /);
 
     $sth->execute();
-    return $sth->fetchall_arrayref();
+    return $sth->fetchall_hashref('student_id');
 }
 
 sub insert {

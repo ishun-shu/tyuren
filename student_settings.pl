@@ -7,4 +7,4 @@ use warnings;
 use FindBin;
 use Tyuren::StudentSettings;
 
-Tyuren::MakeSettings->display;
+Tyuren::StudentSettings->display;

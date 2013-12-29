@@ -3,12 +3,14 @@ package Tyuren::StudentSettings;
 use strict;
 use warnings;
 
-use utf8;
+use lib '/virtual/tyuren/lib/perl5';
 use FindBin;
+use utf8;
 use HTML::Template::Pro;
 
 use Tyuren;
 use Tyuren::ParamsConverter;
+use Tyuren::PrintSystem;
 
 sub display {
     my $self = shift;
@@ -18,10 +20,16 @@ sub display {
     );
 
     my $tyuren = Tyuren->new({});
-    my $all_student = $tyuren->get_all_student;
+    my $all_student = $tyuren->get_all_student_info;
+    my @student_list;
+    push @student_list, $all_student->{$_} for(keys %$all_student);
+
     $template->param(
-	all_student => $all_student,
-    )->output();
+	all_student => \@student_list,
+    );
+
+    Tyuren::PrintSystem->header_html();
+    return $template->output();
 }
 
 1;
