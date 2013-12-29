@@ -17,7 +17,6 @@ use Tyuren::DB::PointHistory;
 
 sub new {
     my ($class, $args) = @_;
-    return unless $args;
     return $class->SUPER::new({
 	params => $args,
 	dbh    => Tyuren::DB->get_db,
@@ -48,6 +47,11 @@ sub get_student_info {
     return Tyuren::DB::MemberInfo->select($self->{dbh}, {
 	student_id => $self->{params}->{student_id},
     });
+}
+
+sub get_all_student_info {
+    my $self = shift;
+    return Tyuren::DB::MemberInfo->select_all($self->{dbh});
 }
 
 sub add_new_student_info {
