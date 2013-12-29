@@ -9,7 +9,6 @@ use utf8;
 use HTML::Template::Pro;
 
 use Tyuren;
-use Tyuren::ParamsConverter;
 use Tyuren::PrintSystem;
 
 sub display {
