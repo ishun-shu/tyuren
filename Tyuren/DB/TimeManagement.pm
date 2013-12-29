@@ -53,7 +53,7 @@ sub select_by_duration {
 	$args{end_datetime}
     );
 
-    return $sth->fetchall_hashref('id');
+    return $sth->fetchall_arrayref();
 }
 
 sub insert {

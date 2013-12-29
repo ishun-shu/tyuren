@@ -24,8 +24,8 @@ sub new {
 	params     => $args,
 	from_email => 'admin@sakuragakusha.com',
 	to_email   => $args->{address},
-	subject    => '櫻學舎からのお知らせ',
-	body       => '',
+	subject    => defined $args->{subject} ? $args->{subject} : '櫻學舎からのお知らせ',
+	body       => defined $args->{body} ? $args->{body} : '',
     });
 }
 
@@ -37,7 +37,7 @@ sub send {
 	$KIND_TO_NAME->{$self->{params}->{kind}},
 	$self->{params}->{total_point},
 	Today_and_Now
-    );
+    ) if $self->{body} eq '';
 
     $self->{body} = Jcode::convert($self->{body},'jis');
     $self->{subject} = encode('MIME-Header', $self->{subject});

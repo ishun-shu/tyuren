@@ -146,12 +146,12 @@ sub get_monthly_time_management {
     my $self = shift;
 
     # target date is last month
-    my ($year, $month) = Add_Delta_YMD(Today(), 0, 0, 0);
+    my ($year, $month) = Add_Delta_YMD(Today(), 0, -1, 0);
     my $days = Days_in_Month($year, $month);
 
     return Tyuren::DB::TimeManagement->select_by_duration($self->{dbh}, {
 	start_datetime => sprintf("%04d-%02d-01 00:00:00", $year, $month),
-	end_datetime   => sprintf("%04d-%02d-%2d 23:59:59", $year, $month, $days),
+	end_datetime   => sprintf("%04d-%02d-%02d 23:59:59", $year, $month, $days),
     });
 }
 
