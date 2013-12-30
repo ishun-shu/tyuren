@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Tyuren System</title>
+</head> 
+<body>
+<h1>change student email settings</h1>
+<TMPL NAME="is_success">
+<h2>change can send email</h2>
+<form method="post" action="http://sakuragakusha.com/tyuren/email_settings.pl">
+  <input name="mode" value="change_can_send" />
+  <input type="text" name="student_id" value="" />
+  <input type="text" name="can_send_email" value="" />
+  <input type="submit" value="change" />
+</form>
+<h2>set student email</h2>
+<form method="post" action="http://sakuragakusha.com/tyuren/email_settings.pl">
+  <input name="mode" value="change_email" />
+  <input type="text" name="student_id" value="" />
+  <input type="text" name="email" value="" />
+  <input type="submit" value="change" />
+</form>
+</body>
+</html>

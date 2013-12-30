@@ -1,4 +1,4 @@
-package Tyuren::StudentSettings;
+package Tyuren::EmailSettings;
 
 use strict;
 use warnings;
@@ -10,22 +10,22 @@ use HTML::Template::Pro;
 
 use Tyuren;
 use Tyuren::PrintSystem;
+use Tyuren::ParamsConverter;
 
 sub display {
     my $self = shift;
 
     my $template = HTML::Template::Pro->new(
-	filename => 'template/student_settings.tmpl'
+	filename => 'template/email_settings.tmpl'
     );
 
-    my $tyuren = Tyuren->new({});
-    my $all_student = $tyuren->get_all_student_info;
+    my $params = Tyuren::ParamsConverter->get_params();
+    my $tyuren = Tyuren->new($params);
+    use Data::Dumper;
     $tyuren->{dbh}->disconnect;
-    my @student_list;
-    push @student_list, $all_student->{$_} for(keys %$all_student);
-
     $template->param(
-	all_student => \@student_list,
+	is_success => 0,
+	tyuren => Dumper $tyuren,
     );
 
     Tyuren::PrintSystem->header_html();
