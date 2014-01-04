@@ -12,6 +12,11 @@ use Jcode;
 use Date::Calc qw/Today_and_Now/;
 use Mail::Sendmail;
 
+use constant {
+    LOGIN  => 1,
+    LOGOUT => 2,
+};
+
 my $KIND_TO_NAME = {
     1 => 'に入室',
     2 => 'を退室',
@@ -31,17 +36,24 @@ sub new {
 
 sub send {
     my $self = shift;
-    $self->{body} = sprintf(
-	_mail_body(),
-	$self->{params}->{nickname},
-	$KIND_TO_NAME->{$self->{params}->{kind}},
-	$self->{params}->{total_point},
-	Today_and_Now
-    ) if $self->{body} eq '';
+
+    if ($self->{body} eq '') {
+	if($self->{params}->{kind} == LOGIN || $self->{params}->{kind} == LOGOUT) {
+	    $self->{body} = sprintf(
+		_mail_body(),
+		$self->{params}->{nickname},
+		$KIND_TO_NAME->{$self->{params}->{kind}},
+		$self->{params}->{total_point},
+		Today_and_Now
+	    );
+	} else {
+	    return 0;
+	}
+    }
 
     $self->{body} = Jcode::convert($self->{body},'jis');
     $self->{subject} = encode('MIME-Header', $self->{subject});
-    my $cc = 'sakuragakusha+tyuren@gmail';
+    my $cc = 'sakuragakusha+tyuren@gmail.com';
     my %mail = (
 	'Content-Type' => 'text/plain; charset="iso-2022-jp"',
 	'From'         => $self->{from_email},

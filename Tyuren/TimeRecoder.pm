@@ -71,9 +71,11 @@ sub execute {
 	Tyuren::PrintSystem->ok();
     }
 
-    # メール送信
     my $student_info = $tyuren->get_student_info;
     my $address = $tyuren->get_student_address;
+    $tyuren->{dbh}->disconnect;
+
+    # メール送信
     my $mailer = Tyuren::SendEmail->new({
 	nickname    => decode('utf8', $student_info->[1]),
 	total_point => $tyuren->{params}->{total_point},
@@ -82,10 +84,8 @@ sub execute {
     });
     my $can_send_email = $student_info->[4];
     if($can_send_email) {
-	$mailer->send();
+	$mailer->send;
     }
-
-    $tyuren->{dbh}->disconnect;
 }
 
 1;
