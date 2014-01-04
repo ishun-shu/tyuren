@@ -21,14 +21,13 @@ sub display {
 
     my $params = Tyuren::ParamsConverter->get_params();
     my $tyuren = Tyuren->new($params);
-    use Data::Dumper;
-    $tyuren->{dbh}->disconnect;
+#    $tyuren->{dbh}->disconnect;
     $template->param(
 	is_success => 0,
-	tyuren => Dumper $tyuren,
     );
 
     Tyuren::PrintSystem->header_html();
+    use Data::Dumper; print Dumper $tyuren,
     return $template->output();
 }
 
