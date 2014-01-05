@@ -13,8 +13,9 @@ use Date::Calc qw/Today_and_Now/;
 use Mail::Sendmail;
 
 use constant {
-    FROM => 'admin@sakuragakusha.com',
-    CC   => 'sakuragakusha+tyuren@gmail.com',
+    FROM    => 'admin@sakuragakusha.com',
+    CC      => 'sakuragakusha+tyuren@gmail.com',
+    SUBJECT => '櫻學舎からのお知らせ',
 };
 
 my $KIND_TO_NAME = {
@@ -29,7 +30,7 @@ sub new {
 	params     => $args,
 	from_email => FROM,
 	to_email   => $args->{address},
-	subject    => defined $args->{subject} ? $args->{subject} : '櫻學舎からのお知らせ',
+	subject    => defined $args->{subject} ? $args->{subject} : SUBJECT,
 	body       => defined $args->{body} ? $args->{body} : '',
     });
 }
