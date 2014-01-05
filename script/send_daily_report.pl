@@ -5,6 +5,8 @@ use strict;
 use warnings;
 
 use FindBin;
-use Tyuren::TimeRecoder;
+use Tyuren::SendReport;
 
-Tyuren::TimeRecoder->execute;
+Tyuren::SendReport->send(
+    type => 'daily'
+);

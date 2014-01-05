@@ -2,23 +2,39 @@
 use strict;
 use warnings;
 
-use lib "virtual/tyuren/public_html/tyuren/t/inc/";
 use Test::More;
-plan(tests => 5);
+use Capture::Tiny qw/capture/;
 
-use_ok("Tyuren::PrintSystem");
-can_ok("Tyuren::PrintSystem", qw/
-    header
-    ok
-    ng
-/);
+BEGIN {
+    use_ok("Tyuren::PrintSystem");
+    can_ok("Tyuren::PrintSystem", qw/
+        header
+        ok
+        ng
+    /);
+};
 
-my $result = Tyuren::PrintSystem->header();
-is($result, "ContentType:text/plane; charset=utf-8\n\n");
+subtest 'header' => sub {
+    my ($stdout, $strerr) = capture {
+	Tyuren::PrintSystem->header();
+    };
+    is($stdout, "Content-Type: text/plane; charset=utf-8;\n\n");
+};
 
-$result = Tyuren::PrintSystem->ok();
-is($result, "0\n");
 
-$result = Tyuren::PrintSystem->ng('Internal Error');
-is($result, "Error : Interna Error\n");
+subtest 'ok' => sub {
+    my ($stdout, $strerr) = capture {
+	Tyuren::PrintSystem->ok();
+    };
+    is($stdout, "0\n");
+};
+
+subtest 'ng' => sub {
+    my ($stdout, $strerr) = capture {
+	Tyuren::PrintSystem->ng("Internal Error");
+    };
+    is($stdout, "NG!\nError : Internal Error\n");
+};
+
+done_testing();
 

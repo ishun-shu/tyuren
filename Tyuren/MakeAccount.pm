@@ -45,12 +45,14 @@ sub execute {
     if ($@) {
 	$tyuren->{dbh}->rollback;
 	Tyuren::PrintSystem->ng($error_message);
+	return 0;
     } else {
 	$tyuren->{dbh}->commit;
 	Tyuren::PrintSystem->ok();
     }
 
     $tyuren->{dbh}->disconnect;
+    return 1;
 }
 
 1;

@@ -25,8 +25,24 @@ sub select {
 
     $sth->execute(
 	$args{student_id},
-	);
+    );
     return $sth->fetch();
+}
+
+sub select_all {
+    my $self = shift;
+    my $dbh = shift;
+
+    my $sth = $dbh->prepare(qq/
+        SELECT
+            *
+        FROM
+            member_info
+        ;
+    /);
+
+    $sth->execute();
+    return $sth->fetchall_hashref('student_id');
 }
 
 sub insert {

@@ -5,6 +5,6 @@ use strict;
 use warnings;
 
 use FindBin;
-use Tyuren::TimeRecoder;
+use Tyuren::StudentSettings;
 
-Tyuren::TimeRecoder->execute;
+Tyuren::StudentSettings->display;

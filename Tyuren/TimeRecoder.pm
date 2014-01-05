@@ -12,8 +12,12 @@ use Tyuren::PrintSystem;
 use Tyuren::ParamsConverter;
 use Tyuren::SendEmail;
 
-my $ADD_POINT = 1;
-my $PASSCODE = 'sakuragakusha2013';
+use constant {
+    LOGIN     => 1,
+    LOGOUT    => 2,
+    ADD_POINT => 1,
+    PASSCODE  => 'sakuragakusha2013',
+};
 
 sub execute {
     my $self = shift;    
@@ -21,15 +25,14 @@ sub execute {
 
     my $params = Tyuren::ParamsConverter->get_params();
     my $tyuren = Tyuren->new($params);
+
+    return 0 unless $tyuren->{params}->{passcode} eq PASSCODE;
+    return 0 unless ($tyuren->{params}->{kind} == LOGIN || $tyuren->{params}->{kind} == LOGOUT);
+
     $tyuren->{dbh}->{AutoCommit} = 0;
-
     my ($error_message, $student_id);
-    eval {
-	if ($tyuren->{params}->{passcode} ne $PASSCODE) {
-	    $error_message = 'invalid passcord';
-	    die $error_message;
-	}
 
+    eval {
 	$student_id = $tyuren->select_student_id;
 	unless ($student_id) {
 	    $error_message = 'unknown student';
@@ -43,7 +46,7 @@ sub execute {
 	    die $error_message;
 	}
 
-	$tyuren->{params}->{point} = $ADD_POINT;
+	$tyuren->{params}->{point} = ADD_POINT;
 	$result = $tyuren->add_new_point_history();
 	unless ($result) {
 	    $error_message = 'cant add new point history';
@@ -71,20 +74,23 @@ sub execute {
 	Tyuren::PrintSystem->ok();
     }
 
-    # メール送信
     my $student_info = $tyuren->get_student_info;
     my $address = $tyuren->get_student_address;
+    $tyuren->{dbh}->disconnect;
+
+    # メール送信
     my $mailer = Tyuren::SendEmail->new({
 	nickname    => decode('utf8', $student_info->[1]),
 	total_point => $tyuren->{params}->{total_point},
 	address     => $address->[2],
+	kind        => $tyuren->{params}->{kind},
     });
     my $can_send_email = $student_info->[4];
     if($can_send_email) {
-	$mailer->send();
+	$mailer->send;
     }
 
-    $tyuren->{dbh}->disconnect;
+    return 1;
 }
 
 1;

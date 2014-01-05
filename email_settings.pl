@@ -5,6 +5,6 @@ use strict;
 use warnings;
 
 use FindBin;
-use Tyuren::TimeRecoder;
+use Tyuren::EmailSettings;
 
-Tyuren::TimeRecoder->execute;
+Tyuren::EmailSettings->display;
