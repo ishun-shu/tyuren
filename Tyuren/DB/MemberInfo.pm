@@ -104,7 +104,7 @@ sub update_status {
 
     my $sth = $dbh->prepare(qq/
         UPDATE
-            login_info
+            member_info
         SET
             status = ?
         WHERE
@@ -128,7 +128,7 @@ sub update_can_send_email {
 
     my $sth = $dbh->prepare(qq/
         UPDATE
-            login_info
+            member_info
         SET
             can_send_email = ?
         WHERE

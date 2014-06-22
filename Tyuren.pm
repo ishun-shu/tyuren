@@ -93,11 +93,10 @@ sub change_student_status {
 
 sub change_can_send_email {
     my $self = shift;
-    my $can_send_email = shift;
     eval {
 	Tyuren::DB::MemberInfo->update_can_send_email($self->{dbh}, {
 	    student_id     => $self->{params}->{student_id},
-	    can_send_email => $can_send_email,
+	    can_send_email => $self->{params}->{can_send_email},
 	});
     };
     return $@ ? 0 : 1;
@@ -105,20 +104,29 @@ sub change_can_send_email {
 
 sub get_student_address {
     my $self = shift;
+    my $student_id = shift;
     return Tyuren::DB::MemberAddress->select($self->{dbh}, {
-	student_id => $self->{params}->{student_id},
+	student_id => $self->{params}->{student_id} || $student_id,
     });
 }
 
 sub add_student_address {
     my $self = shift;
-    my $email = shift;
-    my $email2 = shift;
     eval {
 	Tyuren::DB::MemberAddress->insert($self->{dbh}, {
 	    student_id => $self->{params}->{student_id},
-	    email      => $email,
-	    defined $email2 ? (email2 => $email2) : (),
+	    email      => $self->{params}->{email},
+	});
+    };
+    return $@ ? 0 : 1;
+}
+
+sub update_student_address {
+    my $self = shift;
+    eval {
+	Tyuren::DB::MemberAddress->update_email($self->{dbh}, {
+	    student_id => $self->{params}->{student_id},
+	    email      => $self->{params}->{email},
 	});
     };
     return $@ ? 0 : 1;

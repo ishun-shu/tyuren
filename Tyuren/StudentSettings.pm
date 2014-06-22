@@ -17,18 +17,22 @@ sub display {
     my $template = HTML::Template::Pro->new(
 	filename => 'template/student_settings.tmpl'
     );
+    Tyuren::PrintSystem->header_html();
 
     my $tyuren = Tyuren->new({});
     my $all_student = $tyuren->get_all_student_info;
-    $tyuren->{dbh}->disconnect;
     my @student_list;
+    for my $student (keys %$all_student) {
+	my $address = $tyuren->get_student_address($student);
+	$all_student->{$student}->{email} = defined $address ? $$address[2] : "";
+    }
+    $tyuren->{dbh}->disconnect;
     push @student_list, $all_student->{$_} for(keys %$all_student);
 
     $template->param(
 	all_student => \@student_list,
     );
 
-    Tyuren::PrintSystem->header_html();
     return $template->output();
 }
 
