@@ -28,6 +28,7 @@ sub display {
 
     Tyuren::PrintSystem->header_html();
     use Data::Dumper; print Dumper $tyuren,
+    print Dumper $params;
     return $template->output();
 }
 

@@ -137,8 +137,8 @@ sub get_daily_time_management {
     # target date is yesterday
     my ($year, $month, $day) = Add_Delta_Days(Today(), -1);
     return Tyuren::DB::TimeManagement->select_by_duration($self->{dbh}, {
-	start_datetime => sprintf("%04d-%02d-%2d 00:00:00", $year, $month, $day),
-	end_datetime   => sprintf("%04d-%02d-%2d 23:59:59", $year, $month, $day),
+	start_datetime => sprintf("%04d-%02d-%02d 00:00:00", $year, $month, $day),
+	end_datetime   => sprintf("%04d-%02d-%02d 23:59:59", $year, $month, $day),
     });
 }
 
